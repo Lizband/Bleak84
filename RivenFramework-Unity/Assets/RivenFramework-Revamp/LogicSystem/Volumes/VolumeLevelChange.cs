@@ -5,15 +5,22 @@
 //
 //=============================================================================
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using RivenFramework;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class VolumeLevelChange : MonoBehaviour
+public class VolumeLevelChange : Volume
 {
     //=-----------------=
     // Public Variables
     //=-----------------=
+    public SceneReference targetScene;
+    public string worldID;
+    public bool useIndexInsteadOfID;
+    public bool indexBackwards;
 
 
     //=-----------------=
@@ -24,19 +31,50 @@ public class VolumeLevelChange : MonoBehaviour
     //=-----------------=
     // Reference Variables
     //=-----------------=
+    private GI_WorldLoader worldLoader;
 
 
     //=-----------------=
     // Mono Functions
     //=-----------------=
-    private void Start()
+    private void OnValidate()
     {
-    
+        // Todo: This is a temporary implementation! ~Liz
+        targetScene.RefreshSceneName();
     }
 
-    private void Update()
+    private new void OnTriggerEnter2D(Collider2D _other)
     {
-    
+        if (GetPlayerInTrigger())
+        {
+            if (!worldLoader) worldLoader = FindObjectOfType<GI_WorldLoader>();
+            worldLoader.LoadWorld(worldID);
+        }
+    }
+
+    private new void OnTriggerEnter(Collider _other)
+    {
+        base.OnTriggerEnter(_other);
+        if (GetPlayerInTrigger())
+        {
+            //if (!_other.GetComponent<Pawn>().isPossessed) return;
+            if (!worldLoader) worldLoader = FindObjectOfType<GI_WorldLoader>();
+            if (useIndexInsteadOfID)
+            {
+                int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+                string scenePath = SceneUtility.GetScenePathByBuildIndex(nextSceneIndex);
+
+                if (!string.IsNullOrEmpty(scenePath))
+                {
+                    string sceneName = System.IO.Path.GetFileNameWithoutExtension(scenePath);
+                    worldLoader.LoadWorld(sceneName);
+                }
+            }
+            else if (!useIndexInsteadOfID)
+            {
+                worldLoader.LoadWorld(targetScene.sceneName);
+            }
+        }
     }
 
     //=-----------------=

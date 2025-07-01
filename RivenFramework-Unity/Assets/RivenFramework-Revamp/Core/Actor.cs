@@ -39,14 +39,6 @@ public class Actor : MonoBehaviour
     //=-----------------=
     // Mono Functions
     //=-----------------=
-    private void Start()
-    {
-    }
-
-    private void Update()
-    {
-    
-    }
 
     //=-----------------=
     // Internal Functions
@@ -69,6 +61,7 @@ public class Actor : MonoBehaviour
     private void GenerateDisplayName()
     {
         displayName = Regex.Replace(gameObject.name, "([a-z])([A-Z])", "$1 $2");
+        displayName = Regex.Replace(displayName, "^[^_]*_", "");
     }
     
     [ContextMenu("Generate UUID")]

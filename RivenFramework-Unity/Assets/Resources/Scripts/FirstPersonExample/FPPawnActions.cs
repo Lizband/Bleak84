@@ -257,9 +257,23 @@ public class FPPawnActions : PawnActions
     /// TODO
     /// </summary>
     /// <param name="_action"></param>
-    public void UseItem(int _action = 0)
+    public void ItemUseAction(Pawn_Inventory _inventory, int _action = 0, string _mode = "press")
     {
-        
+        var item = _inventory.GetComponentInChildren<Item>(false);
+        if (item is null) return;
+
+        switch (_action)
+        {
+            case 0:
+                item.UsePrimary(_mode);
+                break;
+            case 1:
+                item.UseSecondary(_mode);
+                break;
+            case 2:
+                item.UseTertiary(_mode);
+                break;
+        }
     }
 
     /// <summary>
@@ -362,7 +376,7 @@ public class FPPawnActions : PawnActions
     
     public void ThrowPhysProp(FPPawn _pawn)
     {
-        _pawn.physObjectAttachmentPoint.attachedObject.GetComponent<Rigidbody>().AddForce(viewCamera.transform.forward * ((FPPawnStats)_pawn.currentStats).throwForce, ForceMode.Impulse);
+        _pawn.physObjectAttachmentPoint.attachedObject.GetComponent<Rigidbody>().AddForce((viewCamera.transform.forward * ((FPPawnStats)_pawn.currentStats).throwForce));
         _pawn.physObjectAttachmentPoint.attachedObject.GetComponent<Object_PhysPickup>().Drop();
     }
 
@@ -399,5 +413,19 @@ public class FPPawnActions : PawnActions
             Vector3.Distance(closestAlly.transform.position, _pawn.transform.position) > ((FPS_Stats)_pawn.stats).comfortableAllyDistance
         }*/
         return collectiveAllyCourage;
+    }
+    
+    public void ItemSwapNext(FPPawn _pawn)
+    {
+        var inventory = _pawn.GetComponentInChildren<Pawn_Inventory>();
+        if (inventory is null) return;
+        inventory.SwitchNext();
+    }
+
+    public void ItemSwapPrevious(FPPawn _pawn)
+    {
+        var inventory = _pawn.GetComponentInChildren<Pawn_Inventory>();
+        if (inventory is null) return;
+        inventory.SwitchPreviouse();
     }
 }

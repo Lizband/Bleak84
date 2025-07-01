@@ -76,7 +76,7 @@ public class Volume : MonoBehaviour
             }*/
 
             // Get a reference to the entity component
-            var targetProp = _other.gameObject;
+            var targetProp = _other.gameObject.GetComponentInParent<Actor>().gameObject;
             // Add the entity to the list if they are not already present
             AddPropToVolume(targetProp);
         }
@@ -97,7 +97,7 @@ public class Volume : MonoBehaviour
         if (_other.CompareTag("PhysProp"))
         {
             // Get a reference to the entity component
-            var targetProp = _other.gameObject;
+            var targetProp = _other.gameObject.GetComponentInParent<Actor>().gameObject;
             // Add the entity to the list if they are not already present
             RemovePropFromVolume(targetProp);
         }
@@ -222,7 +222,7 @@ public class Volume : MonoBehaviour
                 continue;
             }
 
-            if (_prop.gameObject.activeInHierarchy is false && disabledObjectsExitVolume)
+            if (_prop && _prop.gameObject.activeInHierarchy is false && disabledObjectsExitVolume)
             {
                 propsToRemove.Add(_prop);
                 continue;
@@ -242,8 +242,10 @@ public class Volume : MonoBehaviour
         
         foreach (var _pawn in pawnsInTrigger)
         {
+            //print("Cool dogs don't do drugs");
             if (pawnsInTrigger.Contains(pawnManager.localPlayerCharacter.GetComponent<Pawn>()))
             {
+                //print("Cool cats wear cool hats");
                 return _pawn;
             }
         }
