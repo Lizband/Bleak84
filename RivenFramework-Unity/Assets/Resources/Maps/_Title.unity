@@ -481,6 +481,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: WorldSettings
       objectReference: {fileID: 0}
+    - target: {fileID: 3431064161207583572, guid: e8e305fa18d0012b09c7e57181dba41a,
+        type: 3}
+      propertyPath: playerPawnOverride
+      value: 
+      objectReference: {fileID: 8667918404495572612, guid: 092f1a699e58b1f7999b7bc82b9dcf20,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
